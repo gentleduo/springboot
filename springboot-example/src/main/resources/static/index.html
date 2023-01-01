@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="jquery3.3.1.js"></script>
+</head>
+<body>
+	<div id="contentDiv"></div>
+	<div id="deleteResult"></div>
+	<input type="button" value="提交数据" onclick="postData()">
+	<br>
+	<input type="button" value="删除数据" onclick="deleteData()">
+	<!-- 	<br>
+	<input type="button" value="获取数据" onclick="getData()">
+	<br> -->
+	<script>
+		/* 测试跨域请求的时候分别在localhost和server01上启动springboot项目，然后在localhost服务器上输入"http://localhost:8081/index.html"，
+		查看页面，然后分别单机两个按钮，查看请求结果 */
+		/*     function getData() {
+		 $.ajax({
+		 url:'http://localhost:8080/bs',
+		 type:'get',
+		 success:function (msg) {
+		 $("#contentDiv").html(msg);
+		 }
+		 })
+		 } */
+		function deleteData() {
+			$.ajax({
+				url : 'http://server01:8081/book/99',
+				type : 'delete',
+				success : function(msg) {
+					$("#deleteResult").html(msg);
+				}
+			})
+		}
+		function postData() {
+			$.ajax({
+				url : 'http://server01:8081/book/',
+				type : 'post',
+				data : {
+					name : '三国演义'
+				},
+				success : function(msg) {
+					$("#contentDiv").html(msg);
+				}
+			})
+		}
+	</script>
+</body>
+</html>

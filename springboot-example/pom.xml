@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.gen</groupId>
+    <artifactId>springboot</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <!-- <packaging>war</packaging> -->
+    <!-- maven中scope的范围 编译，测试，运行 1.compile：默认范围，编译测试运行都有效 2.provided：在编译和测试时有效
+        3.runtime：在测试和运行时有效 4.test:只在测试时有效 5.system:在编译和测试时有效，与本机系统关联，可移植性差 -->
+    <name>springboot</name>
+    <url>http://maven.apache.org</url>
+    <!-- spring-boot-starter-parent主要提供如下默认配置： 1)Java版本默认使用1.8 。 2)编码格式默认使用UTF-8。
+        3)提供Dependency Management进行项目依赖的版本管理 。4)默认资源过滤与插件配置 -->
+    <!-- <parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.3.RELEASE</version> </parent> -->
+    <!-- spring-boot-starter-parent虽然方便，但是实际项目开发时一般需要使用公司自己的parent，这个时候如果还想进行项目依赖版本的统一管理，就需要使用Dependency
+        Management来实现。 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 以下表示引入另外一个groupId为org.springframework.boot、artifactId为spring-boot-dependencies、packaging为pom的dependencyManagement -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.0.3.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!-- 此时可以不用继承spring-boot-starter-parent了，但是Java的版本、编码的格式等都需要开发者手动配置。Java版本的配置很简单，添加一个maven-compiler-plugin即可 -->
+    <!-- 由于不继承spring-boot-starter-parent了，编码格式也需要配置 -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 如果是打war包的时候需要排除内置的Tomcat容器 -->
+            <!-- 有两种方式：1.排除spring-boot-starter-web中的Tomcat；2.添加spring-boot-starter-tomcat依赖并将scope设置成provided -->
+            <!-- <exclusions> <exclusion> <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId> </exclusion> </exclusions> -->
+        </dependency>
+        <!-- SpringBoot集成Jsp以jar包的方式运行时必须引入jstl以及 内嵌的tomcat支持模块 -->
+        <!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>jstl</artifactId>
+            </dependency> <dependency> <groupId>org.apache.tomcat.embed</groupId> <artifactId>tomcat-embed-jasper</artifactId>
+            </dependency> -->
+        <!--添加spring-boot-starter-tomcat依赖并将scope设置成provided（构建war包、并且通过外置服务器运行的时候需要配置） -->
+        <!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope> </dependency> -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- SpringBoot在Spring的基础上对AOP的配置提供了自动化配置解决方案：spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- MyBatis依赖、数据库驱动依赖以及数据库连接池依赖 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- 引入外部jar -->
+        <!-- <dependency> <groupId>com.aliyun</groupId> <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.2.2</version> <scope>system</scope> <systemPath>${project.basedir}/libs/aliyun-java-sdk-core-3.3.1.jar</systemPath>
+            </dependency> -->
+    </dependencies>
+    <!-- maven继承机制， -->
+    <!-- 如果配置了parent节点，子模块的依赖从父模块得到了继承，即使在子模块中不配置<dependencies>节点，子模块也引入了它的依赖。 -->
+    <!-- 但是上述配置存在一个问题，假设模块A中并不需要fastjson依赖，但由于继承，也同样从父模块中继承了fastjson依赖。换句话说，以后继承自该parent模块的其他子模块也许并不需要parent模块中声明的所有依赖，但是就目前这种配置方式，父模块中的这些依赖都会被无条件的继承，这显然是不合理的，这就需要用到<dependencyManagemnt>节点。 -->
+    <!-- <dependencyManagemnt>节点中配置的依赖并不会真正的引入依赖，（即不会下载jar到本地仓库）但是该节点却能够被子模块继承，要在子模块中真正引入依赖，需要将依赖配置在<dependencies>节点下，而这种方式配置的依赖可以省略<version>节点，使用的<version>即是在<dependencyManagement>节点中配置的相应<version>。 -->
+    <!-- dependencyManagement里只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。如果不在子项目中声明依赖，是不会从父项目中继承下来的；只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。 -->
+    <!-- <dependencyManagement>节点的另一个好处是，使得多个子模块中引入的相同依赖版本号能够保持一致。那如何在一个模块中引入另外一个模块的dependencyManagement呢？ -->
+    <!-- 假设在某个模块demo-other中也有<dependencyManagement>节点管理着一批依赖，现在想在demo-parent模块中将那些依赖管理全部导入，把demo-other模块中的依赖全部复制到demo-parent模块的<dependencyManagement>节点下是可行但是非常不优雅的做法。比较优雅的做法是用到import依赖范围，即<scope>import</scope>。 -->
+    <build>
+        <!-- 生成的jar包或者war包的名称 -->
+        <finalName>springboot</finalName>
+        <plugins>
+            <!-- 解决 Description Resource Path Location Type Dynamic Web Module 3.0
+                requires Java 1.6 or newer -->
+            <!-- 这个maven插件同时解决了， maven update project JDK变回1.5 问题 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <!-- 打成jar包部署或者直接使用java -jar命令的时候，提示了xxxxxx.jar中没有主清单属性： 主清单属性即：META-INF，其中META-INF文件夹下有一个MANIFEST.MF文件，该文件指明了程序的入口以及版本信息等内容 -->
+            <!-- 解决办法：在pom中添加一个SpringBoot的构建的插件，然后重新运行 mvn install即可。 -->
+            <!-- 即如果将SpringBoot打成jar运行，则需要添加一个spring-boot-maven-plugin到pom.xml中 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- SpringBoot集成Jsp 以jar包的方式运行，必须指定spring-boot-maven-plugin的版本为1.4.2，其他版本不兼容 -->
+                <!-- <version>1.4.2.RELEASE</version> -->
+                <!--在不使用spring-boot-start-parent构建springboot应用的时候必须加入repackage配置后，maven打包时才会把第三方jar包一起打入 -->
+                <!-- 代表maven打包时会将外部引入的jar包（比如在根目录下或resource文件下新加外部jar包）打包到项目jar，在服务器上项目才能运行，不加此配置，本地可以运行，因为本地可以再lib下找到外部包，但是服务器上jar中是没有的。 -->
+                <!-- 并且外部引入的jar的scope必须设置为system -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- executable设置为true表示在jar中添加启动脚本，制作在linux环境下可执行的jar。即：在linux环境下，通过chmod a+x后可以通过./app.jar的方式运行，但是这种打包方式将无法使用jar -xvf解压jar包（可以使用unzip命令进行解压） -->
+                <!-- executable设置为false的话，则是指定普通的可执行jar，通过java -jar命令运行，并且也可以通过jar -xvf解压jar包 -->
+                <!-- 仅在打算直接执行时才启用此选项，一般情况下都设置为false -->
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                    <executable>false</executable>
+                </configuration>
+            </plugin>
+            <!-- war包打包插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!-- jar包的构建工具会自动忽略src/main/webapp目录，尽管该目录也是一个公共标准，但是它仅仅在war中有效 -->
+        <!-- 所以springboot+jsp的项目用jar的方式打包后部署到服务器上运行，会出现jsp 404错误 -->
+        <!-- 解决方案：在maven打包插件中将指定的文件夹打入jar包。 -->
+        <!-- <resources> <resource> <directory>src/main/webapp</directory> <targetPath>META-INF/resources</targetPath>
+            <includes> <include>**/**</include> </includes> <filtering>false</filtering>
+            </resource> <resource> <directory>src/main/java</directory> <includes> <include>**/**</include>
+            </includes> <filtering>false</filtering> </resource> <resource> <directory>src/main/resources</directory>
+            <includes> <include>**/**</include> </includes> <filtering>false</filtering>
+            </resource> </resources> -->
+    </build>
+
+</project>
