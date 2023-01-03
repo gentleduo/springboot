@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationContextInitializer=\
+org.duo.application.context.AfterHelloWorldApplicationContextInitializer,\
+org.duo.application.context.HelloWorldApplicationContextInitializer

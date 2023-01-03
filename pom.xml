@@ -7,6 +7,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>springboot-autoconfigure</module>
+        <module>springboot-overview</module>
+        <module>springboot-application</module>
+        <module>springboot-webmvc</module>
     </modules>
 
     <packaging>pom</packaging>
