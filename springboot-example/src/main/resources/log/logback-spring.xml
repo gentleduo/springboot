@@ -208,7 +208,7 @@
 
 	<!-- <logger>元素只接受一个必需的name属性，一个可选的level属性和一个可选的additivity属性，允许值为true或false。 -->
 	<!-- name:用来指定受此logger约束的某一个包或者具体的某一个类。 -->
-	<!-- level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF， 还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。 -->
+	<!-- level:用来设置日志的最低打印级别(大于等于的level所设置的级别的日志才输出)，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF， 还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。 -->
 	<!-- addtivity:是否向上级logger传递打印信息。默认是true -->
 	<!-- 假设存在根root、X、X.Y、X.Y.Z四个记录器 -->
 	<!-- 例1：示例中，仅为根记录器分配了级别。 此级别值DEBUG由其他记录器X，X.Y和X.Y.Z继承 -->
